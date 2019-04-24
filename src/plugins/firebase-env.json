@@ -1,0 +1,8 @@
+{
+    "apiKey": "AIzaSyA57hazC74xRDr28P35qzxiIuBbJXMw-CE",
+    "authDomain": "quasar-todo-demo.firebaseapp.com",
+    "databaseURL": "https://quasar-todo-demo.firebaseio.com",
+    "projectId": "quasar-todo-demo",
+    "storageBucket": "",
+    "messagingSenderId": "756857774202"
+}
