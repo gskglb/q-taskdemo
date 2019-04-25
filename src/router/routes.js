@@ -16,7 +16,8 @@ const routes = [
     },
     children: [
       { path: 'new', component: () => import('pages/NewTask.vue') },
-      { path: 'list', component: () => import('pages/List.vue') }
+      { path: 'list', component: () => import('pages/List.vue') },
+      { path: 'done', component: () => import('pages/Done.vue') }
     ]
   },
   {

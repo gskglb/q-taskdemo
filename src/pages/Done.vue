@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="bg-light" >
-    <q-card color='white' flat square text-color="black" class="q-pa-sm q-mb-sm" v-for="(record, index) in tasksList" v-bind:key="record.keyRef" dark>
+    <q-card color='white' flat square text-color="black" class="q-pa-sm q-mb-sm" v-for="(record, index) in completedTasksList" v-bind:key="record.keyRef" dark>
       <q-card-title>
         <div class="q-body-2">
           <q-icon :name="record.start_date_time | dateIcon" color="red"></q-icon>
@@ -60,6 +60,15 @@
 
         </q-collapsible>
       </q-item-main>
+    </q-card>
+    <h5 class="text-white">Completed Tasks</h5>
+    <q-card color='primary' text-color="black" class="q-ma-sm" v-for="(record) in completedTasksList" v-bind:key="record.keyRef" dark>
+      <q-card-title>
+        {{record.title | limitText}}
+        <q-icon v-if="record.completed == true" name="done" color="positive"/>
+        <q-btn round flat icon="delete_outline" slot="right" color="red"  @click.native="deleteTask(record.keyRef)">
+        </q-btn>
+      </q-card-title>
     </q-card>
   </q-page>
 </template>

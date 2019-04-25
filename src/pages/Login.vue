@@ -1,18 +1,15 @@
 <template>
-  <q-page padding class="bg-blue-grey-9">
-    <q-card color='blue-grey-10' text-color="black" class="fixed-center text-center" style="width: 80%; max-width: 400px;">
+  <q-page padding class="bg-light">
+    <q-card color='white' text-color="black" class="fixed-center text-center" style="width: 80%; max-width: 400px;">
       <q-card-main>
-        <q-field class="q-mb-md"
-          dark
+        <q-field class="q-mb-md" dark
           label-width=12
           icon="email"
-          icon-color = "white"
           label="Your Email"
           :error="$v.form.email.$error"
           error-label="We need a valid email"
         >
             <q-input
-              dark
               v-model="form.email"
               @blur="$v.form.email.$touch"
               @keyup.enter="submit"
@@ -22,20 +19,18 @@
           dark
           label-width=12
           icon="lock"
-          icon-color = "white"
           label="Your Password"
           :error="$v.form.password.$error"
           error-label="Password is not correct"
         >
             <q-input class="q-mb-sm"
-              dark
               type="password"
               v-model="form.password"
               @blur="$v.form.password.$touch"
               @keyup.enter="submit"
             />
         </q-field>
-      <q-btn color="primary" text-color="black" @click="submit" class="full-width q-mt-md" >
+      <q-btn color="primary" @click="submit" class="full-width q-mt-md" >
         <span v-if="!loading">Sign In</span>
         <q-spinner-dots v-else/>
       </q-btn>

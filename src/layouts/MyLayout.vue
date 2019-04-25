@@ -1,55 +1,25 @@
 <template>
   <q-layout view="lHr Lpr lFr">
     <q-layout-header>
-      <q-toolbar
-        color="blue-grey-10"
-      >
-        <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-        >
+      <q-toolbar text-color="dark" inverted>
+        <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
           <q-icon name="menu" />
         </q-btn>
-
-        <q-toolbar-title>
+        <q-toolbar-title class="black">
           My Productive App
           <div slot="subtitle">Wisely use your precious time </div>
         </q-toolbar-title>
       </q-toolbar>
-      <q-toolbar
-        color="blue-grey-10"
-      >
-        <q-tabs color="blue-grey-10" style="width:100%">
-  <q-route-tab
-    icon="view_list"
-    to="/list"
-    exact
-    slot="title"
-  />
-  <q-route-tab
-    icon="add"
-    to="/new"
-    exact
-    slot="title"
-  />
-</q-tabs>
+      <q-toolbar inverted>
+        <q-tabs text-color="dark" style="width:100%" inverted>
+          <q-route-tab animated swipable icon="view_list"  to="/list" exact slot="title" />
+          <q-route-tab animated swipable icon="add" to="/new" exact slot="title" />
+          <q-route-tab animated swipable icon="done_all" to="/done" exact slot="title" />
+        </q-tabs>
       </q-toolbar>
     </q-layout-header>
-    <q-layout-footer>
-    </q-layout-footer>
-
-    <q-layout-drawer
-      v-model="leftDrawerOpen"
-      :content-class="$q.theme === 'mat' ? 'bg-grey-2white' : null"
-    >
-      <q-list
-        no-border
-        link
-        inset-delimiter
-      >
+    <q-layout-drawer v-model="leftDrawerOpen" :content-class="$q.theme === 'mat' ? 'bg-grey-2white' : null">
+      <q-list no-border link inset-delimiter>
         <q-list-header>Essential Links</q-list-header>
         <q-item @click.native="openURL('http://quasar-framework.org')">
           <q-item-side icon="school" />
