@@ -7,7 +7,8 @@ module.exports = function (ctx) {
       'i18n',
       'axios',
       'vuelidate',
-      'firebase'
+      'firebase',
+      'eventBus'
     ],
     css: [
       'app.styl'
@@ -81,7 +82,8 @@ module.exports = function (ctx) {
         'QCollapsible',
         'QPopover',
         'QSlider',
-        'QToggle'
+        'QToggle',
+        'QTooltip'
       ],
       directives: [
         'Ripple'

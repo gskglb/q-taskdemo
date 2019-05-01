@@ -1,63 +1,58 @@
 <template>
-  <q-page padding class="bg-light" >
-    <q-card color='white' flat square text-color="black" class="q-pa-sm q-mb-sm" v-for="(record, index) in tasksList" v-bind:key="record.keyRef" dark>
+  <q-page class="bg-white" style="margin-top:0px">
+    <q-card color='blue-grey-14' flat square style="margin-bottom:3px">
+      <q-item-main class="q-px-sm" >
+        <q-collapsible label="Filters" dark style="margin-bottom:4px" @show="defaultFilters">
+          <div>
+            <div class="row no-wrap">
+              <q-field class="q-pa-md" dark label="Filter by date">
+                <q-datetime dark v-model="filter_start_date_time" type="date" @change="setFilterDate"/>
+              </q-field>
+              <q-field class="q-pa-md" dark label="Filter by priority">
+                <q-select dark v-model="filter_priority" :options="priorityOptions" class="q-mb-md" @input="setFilterPriority" />
+              </q-field>
+            </div>
+            <div class="row justify-end">
+              <q-btn dark class="q-mb-sm self-center" icon="clear" flat label="Clear Filters" @click="clearFilters"/>
+            </div>
+          </div>
+        </q-collapsible>
+      </q-item-main>
+    </q-card>
+    <q-card color="blue-grey-14" flat square style="margin:2px" v-for="(record, index) in tasksList" v-bind:key="record.keyRef">
       <q-card-title>
-        <div class="q-body-2">
-          <q-icon :name="record.start_date_time | dateIcon" color="red"></q-icon>
+        <div class="q-body-3">
+          <q-icon :name="record.start_date_time | dateIcon"></q-icon>
           {{record.title | limitText}}
         </div>
         <p class="q-caption">Start by : {{record.start_date_time  | formatDate}}</p>
-        <q-icon v-if="record.completed == true" name="done" color="positive"/>
-        <q-btn round flat icon="delete_outline" slot="right" color="red"  @click.native="deleteTask(record.keyRef)">
+        <q-icon v-if="record.completed == true" name="done" />
+        <q-btn round flat icon="delete_outline" slot="right" color="white"  @click.native="deleteTask(record.keyRef)">
         </q-btn>
       </q-card-title>
       <q-item-main class="q-px-sm" >
-        <q-progress :percentage="record.percentage_completion" color="positive" stripe />
-        <q-collapsible :icon="record.priority | iconName" :label="record.priority | priorize">
+        <q-progress :percentage="record.percentage_completion"  stripe />
+        <q-collapsible :icon="record.priority | iconName" :label="record.priority | priorize" dark>
           <div>
-            <q-field class="q-mb-md"
-              dark
-              icon-color = "black"
-              label="Task"
-            >
-                <q-input v-model="tasksList[index].title" />
-
+            <q-field class="q-mb-md" label="Task" dark>
+                <q-input v-model="tasksList[index].title" dark/>
             </q-field>
 
-            <q-field class="q-mb-md"
-              dark
-              label-width=12
-              icon-color = "black"
-              label="Chage start date and time"
-            >
-              <q-datetime v-model="tasksList[index].start_date_time" type="datetime" color="positive" dark />
+            <q-field class="q-mb-md" dark label-width=12 label="Chage start date and time" >
+              <q-datetime v-model="tasksList[index].start_date_time" type="datetime" dark />
             </q-field>
 
-            <q-field class="q-mb-md"
-              dark
-              label-width=12
-              icon-color = "black"
-              label="Chage percentage"
-            >
+            <q-field class="q-mb-md" dark label-width=12 icon-color = "black" label="Chage percentage" >
               <div class="row no-wrap">
-                <q-slider v-model="tasksList[index].percentage_completion" label snap color="positive" :min="0" :max="100" dark />
+                <q-slider v-model="tasksList[index].percentage_completion" label snap  :min="0" :max="100" dark/>
               </div>
             </q-field>
 
-            <q-field class="q-mb-md"
-              dark
-              label-width=12
-              icon-color = "black"
-            >
-              <q-toggle v-model="tasksList[index].completed" color="secondary" label="Completed" />
+            <q-field class="q-mb-md" dark label-width=12>
+              <q-toggle v-model="tasksList[index].completed" label="Completed" />
             </q-field>
-            <q-btn
-              color="secondary"
-              @click="updateTask(tasksList[index])">
-                Update
-            </q-btn>
+            <q-btn color="blue-grey-9" @click="updateTask(tasksList[index])"> Update </q-btn>
           </div>
-
         </q-collapsible>
       </q-item-main>
     </q-card>
@@ -65,10 +60,12 @@
 </template>
 
 <style>
+  q-card { border-color: coral }
 </style>
 
 <script>
 import { date } from 'quasar'
+import _ from 'underscore'
 export default {
   name: 'PageIndex',
   methods: {
@@ -96,6 +93,19 @@ export default {
     deleteTask: function (keyRef) {
       console.log(keyRef)
       this.$db.ref('/user-tasks/' + this.$auth.currentUser.uid + '/' + keyRef).remove()
+    },
+    async setFilterDate (val) {
+      this.filter_start_date_time = val
+    },
+    async setFilterPriority (val) {
+      this.filter_priority = val
+    },
+    async clearFilters () {
+      this.filter_start_date_time = '-1'
+      this.filter_priority = '-1'
+    },
+    async defaultFilters () {
+      this.filter_start_date_time = Date.now()
     }
   },
   watch: {
@@ -103,16 +113,42 @@ export default {
 
   data () {
     return {
+      filter_start_date_time: '-1',
+      filter_priority: '-1',
+      filter_selected_priority: 'All',
+      priorityOptions: [
+        { label: 'All', value: '-1' },
+        { label: 'Very High', value: '1' },
+        { label: 'High', value: '2' },
+        { label: 'Medium', value: '3' },
+        { label: 'Low', value: '4' }
+      ]
+
     }
   },
 
   computed: {
     tasksList: function () {
       let tasksList = this.$store.getters['tasks/tasksList']
+
+      if (this.filter_priority !== '-1') {
+        tasksList = _.filter(tasksList, (element) => {
+          return element.priority === this.filter_priority
+        })
+      }
+      if (this.filter_start_date_time !== '-1') {
+        tasksList = _.filter(tasksList, (element) => {
+          return date.formatDate(element.start_date_time, 'DDMMYYYY') === date.formatDate(this.filter_start_date_time, 'DDMMYYYY')
+        })
+      }
+      tasksList = _.sortBy(tasksList, 'priority')
       return tasksList
     },
     completedTasksList: function () {
       return this.$store.getters['tasks/completedTasksList']
+    },
+    filterDateKey: function () {
+      return date.formatDate(this.filter_start_date_time, 'DD-MM-YYYY')
     }
   },
 
@@ -184,7 +220,9 @@ export default {
     }
   },
 
-  mounted () {
+  created () {
+    this.$bus.$emit('setTitleAndSlogan', { title: 'In-progress Tasks', slogan: '' })
   }
+
 }
 </script>

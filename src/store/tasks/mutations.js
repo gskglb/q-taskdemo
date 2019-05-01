@@ -1,8 +1,14 @@
 export function taskAdded (state, task) {
   if (task.val().completed !== true) {
-    state.tasksList.push(task.val())
+    let index = state.tasksList.findIndex(element => element.keyRef === task.key)
+    if (index < 0) {
+      state.tasksList.push(task.val())
+    }
   } else {
-    state.completedTasksList.push(task.val())
+    let cindex = state.tasksList.findIndex(element => element.keyRef === task.key)
+    if (cindex < 0) {
+      state.completedTasksList.push(task.val())
+    }
   }
 }
 

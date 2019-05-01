@@ -1,27 +1,25 @@
 <template>
-  <q-page padding class="bg-blue-grey-9">
-    <q-card color='blue-grey-10' dark>
+  <q-page padding class="bg-light" style="margin-top:-15px">
+    <q-card color='white' flat square>
     <q-card-title>
         New Task
     </q-card-title>
     <q-card-main>
         <q-field class="q-mb-md"
-          dark
           label-width=12
           icon-color = "white"
           :error="$v.taskData.title.$error"
           error-label="Please add task"
         >
-            <q-input v-model="taskData.title" placeholder="Add your task..." class="q-mb-md" dark />
+            <q-input v-model="taskData.title" placeholder="Add your task..." class="q-mb-md"  />
         </q-field>
         <q-field class="q-mb-md"
-          dark
           label-width=12
           icon-color = "white"
           :error="$v.taskData.start_date_time.$error"
           error-label="Please add date and time"
         >
-            <q-datetime v-model="taskData.start_date_time" type="datetime" placeholder="Set date and time..." class="q-mb-md" dark />
+            <q-datetime v-model="taskData.start_date_time" type="datetime" placeholder="Set date and time..." class="q-mb-md"/>
         </q-field>
         <q-field class="q-mb-md"
           label-width=12
@@ -38,7 +36,7 @@
                 dark />
         </q-field>
 
-    <q-btn color="primary" text-color="black" @click="addTask" class="full-width q-mt-md" >
+    <q-btn color="primary" text-color="white" @click="addTask" class="full-width q-mt-md" >
         <span v-if="!loading">Add Task</span>
         <q-spinner-dots v-else/>
     </q-btn>
@@ -121,6 +119,10 @@ export default {
       start_date_time: { required },
       priority: { required }
     }
+  },
+  created () {
+    this.$bus.$emit('setTitleAndSlogan', { title: 'New Task', slogan: 'create new task' })
   }
+
 }
 </script>

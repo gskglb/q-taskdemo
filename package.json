@@ -1,8 +1,8 @@
 {
-  "name": "ideaapp",
+  "name": "taskapp",
   "version": "0.0.1",
-  "description": "An app to socialize your idea",
-  "productName": "Idea Collaboration App",
+  "description": "know your tasks",
+  "productName": "Task Management App",
   "cordovaId": "parimalaapplabs.idea",
   "author": "Guru K<guru4raj@gmail.com>",
   "private": true,
@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "firebase": "^5.9.4",
+    "underscore": "^1.9.1",
     "vue-i18n": "^7.3.3",
     "vuelidate": "^0.7.4",
     "vuex": "^3.1.0"
@@ -20,6 +21,11 @@
   "devDependencies": {
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
+    "devtron": "^1.4.0",
+    "electron": "^4.0.5",
+    "electron-debug": "^2.1.0",
+    "electron-devtools-installer": "^2.2.4",
+    "electron-packager": "^13.1.1",
     "eslint": "^5.10.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-vue": "^5.0.0",

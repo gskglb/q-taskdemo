@@ -1,6 +1,9 @@
 <template>
-  <q-page padding class="bg-light">
-    <q-card color='white' text-color="black" class="fixed-center text-center" style="width: 80%; max-width: 400px;">
+  <q-page class="bg-blue-grey-14">
+    <!-- <div class="row justify-center">
+      <h2 class="center text-center" style="margin-top:50px; color:white">Task <br />Management <br />App</h2>
+    </div> -->
+    <q-card color='white' flat square text-color="black" class="fixed-center text-center" style="width: 80%; max-width: 400px;">
       <q-card-main>
         <q-field class="q-mb-md" dark
           label-width=12
@@ -8,6 +11,7 @@
           label="Your Email"
           :error="$v.form.email.$error"
           error-label="We need a valid email"
+          text-color="blue-grey-14"
         >
             <q-input
               v-model="form.email"
@@ -30,7 +34,7 @@
               @keyup.enter="submit"
             />
         </q-field>
-      <q-btn color="primary" @click="submit" class="full-width q-mt-md" >
+      <q-btn color="blue-grey-14" @click="submit" class="full-width q-mt-md" >
         <span v-if="!loading">Sign In</span>
         <q-spinner-dots v-else/>
       </q-btn>
@@ -76,7 +80,11 @@ export default {
             this.loading = false
           }).catch((error) => {
             console.log(error)
-            this.$q.notify('Email / password not correct. Please check')
+            if (error.code === 'auth/network-request-failed') {
+              this.$q.notify(error.message)
+            } else {
+              this.$q.notify('Email / password not correct. Please check')
+            }
           })
         this.loading = false
       }
