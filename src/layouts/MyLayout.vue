@@ -5,17 +5,24 @@
         <!-- <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
           <q-icon name="menu" />
         </q-btn> -->
+        <q-btn flat dense round aria-label="New" @click="$router.push('list')">
+          <q-icon name="home" />
+        </q-btn>
         <q-toolbar-title class="black">
           {{this.title}}
           <div slot="subtitle">{{this.slogan}}</div>
         </q-toolbar-title>
+        <q-btn flat dense round aria-label="New" @click="$router.push('new')">
+          <q-tooltip anchor="center right" self="center left" dark>New Task</q-tooltip>
+          <q-icon name="add" />
+        </q-btn>
         <q-btn flat dense round aria-label="Exit">
           <q-tooltip anchor="center right" self="center left" dark>SignOut</q-tooltip>
           <q-icon name="exit_to_app" />
         </q-btn>
       </q-toolbar>
     </q-layout-header>
-    <q-layout-footer>
+    <!-- <q-layout-footer>
       <q-toolbar color="blue-grey-14" text-color="white">
         <q-tabs color="blue-grey-14" text-color="white" style="width:100%">
           <q-route-tab animated swipable to="/list" exact slot="title" >In Progress</q-route-tab>
@@ -23,7 +30,7 @@
           <q-route-tab animated swipable to="/done" exact slot="title">Completed</q-route-tab>
         </q-tabs>
       </q-toolbar>
-    </q-layout-footer>
+    </q-layout-footer> -->
 
     <!-- <q-layout-drawer v-model="leftDrawerOpen" :content-class="$q.theme === 'mat' ? 'bg-grey-2white' : null">
       <q-list no-border link inset-delimiter>

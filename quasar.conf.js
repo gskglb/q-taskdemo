@@ -55,11 +55,6 @@ module.exports = function (ctx) {
         'QToolbarTitle',
         'QBtn',
         'QIcon',
-        'QList',
-        'QListHeader',
-        'QItem',
-        'QItemMain',
-        'QItemSide',
         'QInput',
         'QField',
         'QTabs',
@@ -77,20 +72,34 @@ module.exports = function (ctx) {
         'QCardMedia',
         'QCardSeparator',
         'QCardActions',
-        'QItemTile',
         'QProgress',
         'QCollapsible',
         'QPopover',
         'QSlider',
         'QToggle',
-        'QTooltip'
+        'QTooltip',
+        'QCheckbox',
+        'QBtnGroup',
+        'QModal',
+        'QList',
+        'QListHeader',
+        'QItem',
+        'QItemMain',
+        'QItemSeparator',
+        'QItemSide',
+        'QItemTile',
+        'QTimeline',
+        'QTimelineEntry',
+        'QScrollArea'
       ],
       directives: [
-        'Ripple'
+        'Ripple',
+        'CloseOverlay'
       ],
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'Dialog'
       ]
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language
