@@ -9,6 +9,14 @@ const routes = [
   },
 
   {
+    path: '/signUp',
+    component: () => import('layouts/NoLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/SignUp.vue') }
+    ]
+  },
+
+  {
     path: '/',
     component: () => import('layouts/MyLayout.vue'),
     meta: {
@@ -17,7 +25,8 @@ const routes = [
     children: [
       { path: 'new', component: () => import('pages/NewTask.vue') },
       { path: 'list', component: () => import('pages/List.vue') },
-      { path: 'done', component: () => import('pages/Done.vue') }
+      { path: 'done', component: () => import('pages/Done.vue') },
+      { path: 'home', component: () => import('pages/Home.vue') }
     ]
   },
   {

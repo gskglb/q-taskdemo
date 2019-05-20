@@ -31,3 +31,8 @@ export function taskChanged (state, task) {
 export function firstAssign (state, taskList) {
   state.tasksList = taskList
 }
+
+export function flush (state) {
+  state.tasksList = []
+  state.completedTasksList = []
+}

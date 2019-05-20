@@ -31,11 +31,28 @@
               @keyup.enter="submit"
             />
         </q-field>
+        <q-field
+          dark
+          label-width=12
+          icon="lock"
+          label="Confirm Password"
+          :error="$v.form.password_again.$error"
+          error-label="Passwords do not match"
+        >
+            <q-input class="q-mb-sm"
+              type="password"
+              v-model="form.password_again"
+              @blur="$v.form.password_again.$touch"
+              @keyup.enter="submit"
+              ref="password"
+            />
+        </q-field>
+
       <q-btn color="blue-grey-14" @click="submit" class="full-width q-mt-md" >
-        <span v-if="!loading">Sign In</span>
+        <span v-if="!loading">Sign Up</span>
         <q-spinner-dots v-else/>
       </q-btn>
-      <q-btn color="blue-grey-14" no-caps outline @click="$router.push('signUp')" class="full-width q-mt-md" >Sign Up</q-btn>
+      <q-btn color="blue-grey-14"  no-caps outline @click="$router.push('/')" class="full-width q-mt-md" >Sign In</q-btn>
       </q-card-main>
     </q-card>
 
@@ -43,7 +60,7 @@
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators'
+import { required, email, sameAs } from 'vuelidate/lib/validators'
 import { QSpinnerDots } from 'quasar'
 
 export default {
@@ -54,7 +71,7 @@ export default {
     return {
       form: {
         email: '',
-        password: ''
+        passwprd: ''
       },
       loading: false
     }
@@ -62,7 +79,8 @@ export default {
   validations: {
     form: {
       email: { required, email },
-      password: { required }
+      password: { required },
+      password_again: { sameAsPassword: sameAs('password') }
     }
   },
   methods: {
@@ -72,9 +90,11 @@ export default {
         this.$q.notify('Please provide the required input.')
       } else {
         this.loading = true
-        await this.$auth.signInWithEmailAndPassword(this.form.email, this.form.password)
+        console.log(this.form.email)
+        await this.$auth.createUserWithEmailAndPassword(this.form.email, this.form.password)
           .then(() => {
-            this.$router.push('/home')
+            this.$router.push('/list')
+            this.$q.notify('Account has been created.')
             this.loading = false
           }).catch((error) => {
             console.log(error)

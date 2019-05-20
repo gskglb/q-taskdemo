@@ -15,3 +15,10 @@ export function taskDeleted ({ commit }, task) {
 export function taskChanged ({ commit }, task) {
   commit('taskChanged', task)
 }
+
+export function flush ({ commit }) {
+  return new Promise((resolve, reject) => {
+    commit('flush')
+    resolve()
+  })
+}

@@ -1,5 +1,11 @@
 <template>
   <q-page class="bg-light" style="margin-top:0px">
+<!-- <q-fab
+  class="fixed"
+  style="right: 18px; bottom: 50px"
+  color="blue-grey-14"
+  icon="add"
+></q-fab> -->
     <q-card color="white" flat square style="margin:2px">
       <q-card-title>
         <q-select class="q-ma-xs"
@@ -17,41 +23,32 @@
     </div>
 
     <q-card color="white" text-color="black"  flat square style="margin:5px" v-for="(record) in tasksList" v-bind:key="record.keyRef">
-    <q-card-title>
-      <div class="q-body-4">
+    <q-card-title >
+      <q-chip dense color="blue-grey-14">{{record.start_date_time  | formatDate}}</q-chip> -
+      <q-chip dense color="blue-grey-14">{{record.end_date_time   | formatDate}}</q-chip>&nbsp;
+      <q-chip dense color="red">{{record.percentage_completion}} %</q-chip>
+      <q-btn round flat size="md" icon="delete_outline" color="red"  @click.native="deleteTask(record.keyRef)">
+      </q-btn>
+      <div class="q-body-2">
         {{record.title | limitText}}
-        <q-icon :name="record.start_date_time | dateIcon">
+        <q-chip dense color="red">{{record.start_date_time | delayCheck}}</q-chip>
+        <!-- <q-icon :name="record.start_date_time | dateIcon">
           <q-tooltip anchor="center right" self="center left" dark>Start time crossed</q-tooltip>
-        </q-icon>
+        </q-icon> -->
         <q-icon v-if="record.completed == true" name="done" />
       </div>
-      <q-btn round flat icon="delete_outline" slot="right" color="red"  @click.native="deleteTask(record.keyRef)">
-      </q-btn>
     </q-card-title>
     <q-item-main class="q-pa-sm" >
       <p class="q-body-4">{{record.summary}} </p>
-      <p class="q-caption">Start by : {{record.start_date_time  | formatDate}} /  ETC : {{record.end_date_time  | formatDate}} </p>
-      <p class="q-caption">Completion : {{record.percentage_completion}} %</p>
-      <q-progress color="success" :percentage="record.percentage_completion" />
-      <br />
-      <div class="row justify-center">
+      <div class="row justify-center q-mt-md">
         <q-btn-group>
-          <q-btn flat no-caps size="sm" label="Edit" class="bg-blue-grey-14" text-color="white" @click.native="editTask = true"/>
+          <q-btn flat no-caps size="sm" label="Edit" class="bg-blue-grey-14" text-color="white" @click.native="editTaskFn(record)"/>
           <q-btn flat no-caps size="sm" label="Mark Complete" class="bg-blue-grey-14" text-color="white" @click.native="completeTask(record)"/>
-          <q-btn flat no-caps  size="sm" label="Add Notes" class="bg-blue-grey-14" text-color="white" @click.native="showNotes = true"/>
+          <q-btn flat no-caps  size="sm" label="Add Notes" class="bg-blue-grey-14" text-color="white" @click.native="addNotesFn(record)"/>
           <q-btn flat no-caps  size="sm" label="Delegate" class="bg-blue-grey-14" text-color="white"/>
         </q-btn-group>
       </div>
       <q-collapsible label="Notes">
-        <!-- <q-list>
-          <q-item v-for="singleNote in record.notes"  v-bind:key="singleNote.added">
-            <q-item-main>
-              <q-item-tile label>{{singleNote.text}}</q-item-tile>
-              <q-item-tile sublabel>Added on {{singleNote.added | formatDate}} </q-item-tile>
-          </q-item-main>
-          <q-item-separator />
-          </q-item>
-        </q-list> -->
         <q-scroll-area style="height: 200px;">
           <q-timeline responsive color="secondary">
             <q-timeline-entry v-for="singleNote in record.notes"  v-bind:key="singleNote.added"
@@ -62,31 +59,11 @@
             </q-timeline-entry>
           </q-timeline>
         </q-scroll-area>
-        <!-- <div>
-          <q-field class="q-mb-md" label="Task" dark>
-              <q-input v-model="tasksList[index].title" dark/>
-          </q-field>
-
-          <q-field class="q-mb-md" dark label-width=12 label="Chage start date and time" >
-            <q-datetime v-model="tasksList[index].start_date_time" type="datetime" dark />
-          </q-field>
-
-          <q-field class="q-mb-md" dark label-width=12 icon-color = "black" label="Chage percentage" >
-            <div class="row no-wrap">
-              <q-slider v-model="tasksList[index].percentage_completion" label snap  :min="0" :max="100" dark/>
-            </div>
-          </q-field>
-
-          <q-field class="q-mb-md" dark label-width=12>
-            <q-toggle v-model="tasksList[index].completed" label="Completed" />
-          </q-field>
-          <q-btn color="blue-grey-9" @click="updateTask(tasksList[index])"> Update </q-btn>
-        </div> -->
       </q-collapsible>
     </q-item-main>
-    <UpdateTask v-bind:taskData="record" v-bind:showNotesModal="editTask" />
-    <AddNotesModal v-bind:taskData="record"  v-bind:showNotesModal="showNotes"/>
   </q-card>
+    <UpdateTask v-bind:taskData="recordToManupulate" v-bind:showNotesModal="editTask" />
+    <AddNotesModal v-bind:taskData="recordToManupulate"  v-bind:showNotesModal="showNotes"/>
   </q-page>
 </template>
 
@@ -139,6 +116,14 @@ export default {
       }).catch(() => {
       })
     },
+    async editTaskFn (record) {
+      this.recordToManupulate = record
+      this.editTask = true
+    },
+    async addNotesFn (record) {
+      this.recordToManupulate = record
+      this.showNotes = true
+    },
     async setFilterDate (val) {
       this.filter_start_date_time = val
     },
@@ -170,6 +155,7 @@ export default {
       filter_option: '1',
       showNotes: false,
       editTask: false,
+      recordToManupulate: null,
       priorityOptions: [
         { label: 'All', value: '-1' },
         { label: 'Very High', value: '1' },
@@ -287,12 +273,12 @@ export default {
       }
     },
 
-    dateIcon: function (startDateTime) {
+    delayCheck: function (startDateTime) {
       let timeStamp = Date.now()
       let taskDate = new Date(startDateTime)
       let diff = date.getDateDiff(timeStamp, taskDate, 'seconds')
       if (diff > 0) {
-        return 'error'
+        return 'Delay'
       } else {
         return ''
       }

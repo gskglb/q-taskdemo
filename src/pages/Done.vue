@@ -1,15 +1,32 @@
 <template>
-  <q-page padding class="bg-light" style="margin-top:-15px">
-    <q-card color='white' flat square text-color="black" class="q-pa-sm q-mb-sm" v-for="record in completedTasksList" v-bind:key="record.keyRef" dark>
+  <q-page class="bg-light" style="margin-top:0px">
+    <q-card color='white' flat square text-color="black" style="margin:2px" v-for="record in completedTasksList" v-bind:key="record.keyRef" dark>
       <q-card-title>
+        <q-chip dense color="blue-grey-14">{{record.start_date_time  | formatDate}}</q-chip> -
+        <q-chip dense color="blue-grey-14">{{record.end_date_time   | formatDate}}</q-chip>&nbsp;
+        <q-chip dense color="red">{{record.percentage_completion}} %</q-chip>
+        <q-btn round flat size="md" icon="delete_outline" color="red"  @click.native="deleteTask(record.keyRef)"></q-btn>
+
         <div class="q-body-2">
          <q-icon v-if="record.completed == true" name="done" color="positive"/>
           {{record.title}}
         </div>
-        <p class="q-caption">Start by : {{record.start_date_time  | formatDate}}</p>
-        <q-btn round flat icon="delete_outline" slot="right" color="red"  @click.native="deleteTask(record.keyRef)">
-        </q-btn>
       </q-card-title>
+      <q-item-main class="q-pa-sm" >
+        <p class="q-body-4">{{record.summary}} </p>
+        <q-collapsible label="Notes">
+          <q-scroll-area style="height: 200px;">
+            <q-timeline responsive color="secondary">
+              <q-timeline-entry v-for="singleNote in record.notes"  v-bind:key="singleNote.added"
+                v-bind:title="singleNote.text"
+                v-bind:subtitle="singleNote.added | formatDate"
+                side="left"
+              >
+              </q-timeline-entry>
+            </q-timeline>
+          </q-scroll-area>
+        </q-collapsible>
+      </q-item-main>
     </q-card>
   </q-page>
 </template>
@@ -107,7 +124,7 @@ export default {
     }
   },
   created () {
-    this.$bus.$emit('setTitleAndSlogan', { title: 'Completed Tasks', slogan: 'no tension' })
+    this.$bus.$emit('setTitleAndSlogan', { title: 'Completed Tasks', slogan: '' })
   }
 
 }

@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="bg-white" style="margin-top:-15px">
+   <q-page class="bg-white" style="margin-top:5px">
     <NewTask />
   </q-page>
 </template>

@@ -30,7 +30,7 @@ export default function (/* { store, ssrContext } */) {
     if (requiresAuth && !currentUser) {
       next('/login')
     } else if (!requiresAuth && currentUser) {
-      next('/')
+      next('/list')
     } else {
       next()
     }

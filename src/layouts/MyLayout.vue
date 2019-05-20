@@ -5,19 +5,17 @@
         <!-- <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
           <q-icon name="menu" />
         </q-btn> -->
-        <q-btn flat dense round aria-label="New" @click="$router.push('list')">
+        <q-btn flat dense round aria-label="New" @click="$router.push('home')">
           <q-icon name="home" />
         </q-btn>
-        <q-toolbar-title class="black">
+        <q-toolbar-title class="black justfy-center">
           {{this.title}}
           <div slot="subtitle">{{this.slogan}}</div>
         </q-toolbar-title>
-        <q-btn flat dense round aria-label="New" @click="$router.push('new')">
-          <q-tooltip anchor="center right" self="center left" dark>New Task</q-tooltip>
-          <q-icon name="add" />
+        <q-btn flat dense round aria-label="New" @click.native="$router.push('new')">
+          <q-icon name="person" />
         </q-btn>
-        <q-btn flat dense round aria-label="Exit">
-          <q-tooltip anchor="center right" self="center left" dark>SignOut</q-tooltip>
+        <q-btn flat dense round aria-label="Exit" @click.native="signOut">
           <q-icon name="exit_to_app" />
         </q-btn>
       </q-toolbar>
@@ -26,7 +24,6 @@
       <q-toolbar color="blue-grey-14" text-color="white">
         <q-tabs color="blue-grey-14" text-color="white" style="width:100%">
           <q-route-tab animated swipable to="/list" exact slot="title" >In Progress</q-route-tab>
-          <q-route-tab animated swipable to="/new" exact slot="title">New</q-route-tab>
           <q-route-tab animated swipable to="/done" exact slot="title">Completed</q-route-tab>
         </q-tabs>
       </q-toolbar>
@@ -56,8 +53,8 @@
           <q-item-main label="Twitter" sublabel="@quasarframework" />
         </q-item>
       </q-list>
-    </q-layout-drawer>
- -->
+    </q-layout-drawer> -->
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -81,6 +78,19 @@ export default {
     setTitleAndSlogan: function (payload) {
       this.title = payload.title
       this.slogan = payload.slogan
+    },
+    async signOut () {
+      // await this.$store.dispatch('tasks/flush')
+      // await this.$router.push('/')
+      let router = this.$router
+      let store = this.$store
+      await this.$auth.signOut().then(function () {
+        console.error('Sign Out good')
+        store.dispatch('tasks/flush')
+        router.push('/')
+      }, function (error) {
+        console.log('Sign Out Error %o', error)
+      })
     }
   },
 

@@ -1,7 +1,7 @@
 <template>
   <q-modal v-model="showModal" minimized ref="modalRef">
     <div style="padding: 2px">
-      <q-card flat square>
+      <q-card flat square v-if="taskData !== null">
       <q-card-main>
           <q-field label-width=12 label="Task" :error="$v.taskData.title.$error" error-label="Please add task">
               <q-input v-model="taskData.title" placeholder="What is the task..." />

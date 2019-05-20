@@ -90,7 +90,8 @@ module.exports = function (ctx) {
         'QItemTile',
         'QTimeline',
         'QTimelineEntry',
-        'QScrollArea'
+        'QScrollArea',
+        'QChip'
       ],
       directives: [
         'Ripple',
